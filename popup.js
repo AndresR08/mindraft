@@ -1,51 +1,30 @@
-const generateBtn = document.getElementById('generate');
-const proofBtn = document.getElementById('proofread');
-const pasteBtn = document.getElementById('paste');
-const promptEl = document.getElementById('prompt');
-const toneEl = document.getElementById('tone');
-const outputEl = document.getElementById('output');
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("generateBtn");
+  const input = document.getElementById("inputText");
+  const output = document.getElementById("output");
 
-function mockGenerate(prompt, tone) {
-  return `Subject: Meeting request about ${prompt}\n\nHi,\n\nI hope you're well. I would like to request a meeting to discuss ${prompt}. Please let me know your availability.\n\nBest regards,\nAndrés`;
-}
+  btn.addEventListener("click", () => {
+    const text = input.value.trim();
+    if (!text) {
+      output.textContent = "⚠️ Escribe algo primero.";
+      return;
+    }
 
-function mockProofread(text) {
-  // placeholder: simple cleanup
-  return text.replace(/\s+/g, ' ').replace(' ,', ',').trim();
-}
+    output.textContent = "⏳ Generando texto...";
 
-generateBtn.addEventListener('click', async () => {
-  const prompt = promptEl.value.trim();
-  const tone = toneEl.value;
-  if (!prompt) { alert('Write a prompt first'); return; }
-
-  outputEl.textContent = 'Generating...';
-
-  try {
-    // TODO: Replace with real Chrome built-in AI call when available.
-    const outputText = mockGenerate(prompt, tone);
-    outputEl.textContent = outputText;
-  } catch (err) {
-    outputEl.textContent = 'Error generating text: ' + err.message;
-  }
-});
-
-proofBtn.addEventListener('click', async () => {
-  const current = outputEl.textContent;
-  if (!current) { alert('Generate first'); return; }
-  outputEl.textContent = 'Proofreading...';
-  try {
-    const fixed = mockProofread(current);
-    outputEl.textContent = fixed;
-  } catch (err) {
-    outputEl.textContent = 'Error proofreading: ' + err.message;
-  }
-});
-
-pasteBtn.addEventListener('click', async () => {
-  const text = outputEl.textContent;
-  if (!text) { alert('Nothing to paste'); return; }
-  chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-    chrome.tabs.sendMessage(tabs[0].id, {action: 'paste', text});
+    chrome.runtime.sendMessage(
+      { action: "generate_text", prompt: text },
+      (response) => {
+        if (!response) {
+          output.textContent = "💥 No hubo respuesta del fondo.";
+          return;
+        }
+        if (response.success) {
+          output.textContent = response.text;
+        } else {
+          output.textContent = "⚠️ Error: " + response.error;
+        }
+      }
+    );
   });
 });
