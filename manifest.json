@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "MinDraft - Smart Email Assistant",
+  "version": "0.1.0",
+  "description": "Generate and proofread emails locally using Chrome built-in AI (Gemini Nano).",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://mail.google.com/*", "<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
+}
