@@ -1,19 +1,54 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Redactor IA</title>
-    <link rel="stylesheet" href="popup.css" />
-  </head>
-  <body>
-    <div id="app">
-      <h1>Redactor IA ✉️</h1>
-      <textarea id="prompt" placeholder="Escribe el texto que quieras mejorar..."></textarea>
-      <button id="generate">Generar Opciones</button>
-      <div id="loading" class="hidden">✍️ Generando texto...</div>
-      <div id="output"></div>
-    </div>
-    <script src="popup.js"></script>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MinDraft</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h2>MinDraft ✍️</h2>
+    </header>
+
+    <section class="input-section">
+      <textarea id="inputText" placeholder="Escribe o dicta tu idea..."></textarea>
+
+      <div class="controls">
+        <button id="micBtn" title="Dictar por voz">🎤</button>
+        <select id="toneSelect" title="Selecciona tono">
+          <option value="formal">Formal</option>
+          <option value="casual">Casual</option>
+          <option value="brief">Breve</option>
+        </select>
+        <button id="generateBtn" class="primary">Redactar con IA</button>
+      </div>
+    </section>
+
+    <section class="output-section">
+      <div id="loader" class="hidden">Pensando… ⏳</div>
+      <pre id="output" class="output-area" aria-live="polite"></pre>
+      <div class="output-actions">
+        <button id="copyBtn">Copiar</button>
+        <button id="useBtn">Usar en textarea</button>
+        <button id="clearOutputBtn">Borrar</button>
+      </div>
+    </section>
+
+    <section class="history-section">
+      <div class="history-header">
+        <h3>Historial</h3>
+        <button id="clearHistoryBtn" class="small">Borrar historial</button>
+      </div>
+      <ul id="historyList" class="history-list"></ul>
+    </section>
+
+    <footer>
+      <small>MinDraft — Usa Gemini. Recuerda no subir tu API key.</small>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
 </html>
