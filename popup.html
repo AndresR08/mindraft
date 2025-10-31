@@ -1,55 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
-    <title>MinDraft</title>
-    <style>
-        body {
-            font-family: "Segoe UI", sans-serif;
-            width: 300px;
-            padding: 15px;
-            background: #f9fafb;
-        }
-        
-        textarea {
-            width: 100%;
-            height: 100px;
-            border-radius: 10px;
-            border: 1px solid #ccc;
-            padding: 10px;
-            resize: none;
-        }
-        
-        button {
-            margin-top: 10px;
-            width: 100%;
-            background-color: #0078d7;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        
-        button:hover {
-            background-color: #005fa3;
-        }
-        
-        .output {
-            margin-top: 10px;
-            white-space: pre-wrap;
-        }
-    </style>
-</head>
-
-<body>
-    <h3>✍️ MinDraft</h3>
-    <textarea id="inputText" placeholder="Escribe tu idea o borrador..."></textarea>
-    <button id="generateBtn">Redactar con IA</button>
-    <div id="output" class="output"></div>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redactor IA</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div id="app">
+      <h1>Redactor IA ✉️</h1>
+      <textarea id="prompt" placeholder="Escribe el texto que quieras mejorar..."></textarea>
+      <button id="generate">Generar Opciones</button>
+      <div id="loading" class="hidden">✍️ Generando texto...</div>
+      <div id="output"></div>
+    </div>
     <script src="popup.js"></script>
-</body>
-
+  </body>
 </html>
