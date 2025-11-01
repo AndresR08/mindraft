@@ -5,9 +5,9 @@ const GEMINI_API_KEY = "AIzaSyBUWkzsKJR-UBinxgTm4WcCWn5Kp2uPzzY";
 
 // Map of available tones
 const toneMap = {
-  formal: "Write a formal and professional response.",
-  casual: "Write a casual, friendly, and approachable response.",
-  brief: "Write a brief and direct response.",
+  formal: "Write a formal and professional response. in english or spanish",
+  casual: "Write a casual, friendly, and approachable response. in english or spanish",
+  brief: "Write a brief and direct response. in english or spanish",
 };
 
 // --- Call Gemini API ---
