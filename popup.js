@@ -1,5 +1,6 @@
-// popup.js - controla UI, voz, copia, historial y formato visual
+// popup.js - controls UI, voice recognition, history, and Markdown rendering
 
+// --- DOM Elements ---
 const inputText = document.getElementById("inputText");
 const generateBtn = document.getElementById("generateBtn");
 const outputEl = document.getElementById("output");
@@ -11,18 +12,22 @@ const historyList = document.getElementById("historyList");
 const clearHistoryBtn = document.getElementById("clearHistoryBtn");
 const toneSelect = document.getElementById("toneSelect");
 const micBtn = document.getElementById("micBtn");
+const resetMemoryBtn = document.getElementById("resetMemoryBtn");
+
 
 const HISTORY_KEY = "minDraft_history";
 const MAX_HISTORY = 10;
 
-// --- Helpers ---
+// --- Helper functions ---
+
+// Show or hide loading indicator
 function showLoading(show) {
   loader.classList.toggle("hidden", !show);
   outputEl.classList.toggle("hidden", show);
   if (show) outputEl.textContent = "";
 }
 
-// Guardar historial y estilo del usuario
+// Save entry to history and learn user's writing style
 async function saveToHistory(entry) {
   try {
     await learnUserStyle(entry.text);
@@ -33,11 +38,11 @@ async function saveToHistory(entry) {
     await chrome.storage.local.set({ [HISTORY_KEY]: arr });
     renderHistory();
   } catch (e) {
-    console.error("Error guardando historial:", e);
+    console.error("Error saving history:", e);
   }
 }
 
-// Aprender estilo del usuario
+// Save latest text to user style examples
 async function learnUserStyle(text) {
   const data = await chrome.storage.local.get("userSamples");
   let samples = data.userSamples || [];
@@ -46,14 +51,14 @@ async function learnUserStyle(text) {
   await chrome.storage.local.set({ userSamples: samples });
 }
 
-// Renderizar historial
+// Render history list
 async function renderHistory() {
   const data = await chrome.storage.local.get(HISTORY_KEY);
   const arr = data[HISTORY_KEY] || [];
   historyList.innerHTML = "";
 
   if (arr.length === 0) {
-    historyList.innerHTML = `<li style="color:#6b7280;font-size:13px">No hay historial aún.</li>`;
+    historyList.innerHTML = `<li style="color:#6b7280;font-size:13px">No history yet.</li>`;
     return;
   }
 
@@ -66,33 +71,32 @@ async function renderHistory() {
 
     const meta = document.createElement("div");
     meta.className = "meta";
-    const date = new Date(item.t).toLocaleString();
     meta.textContent = `${item.prompt.slice(0, 60)}${item.prompt.length > 60 ? "…" : ""}`;
 
-    const small = document.createElement("div");
-    small.className = "meta";
-    small.textContent = date;
+    const dateEl = document.createElement("div");
+    dateEl.className = "meta";
+    dateEl.textContent = new Date(item.t).toLocaleString();
 
     left.appendChild(meta);
-    left.appendChild(small);
+    left.appendChild(dateEl);
 
     const actions = document.createElement("div");
     actions.className = "actions";
 
     const copy = document.createElement("button");
-    copy.textContent = "Copiar";
+    copy.innerHTML = `<img src="icons/copy.png" alt="Copy" width="16" height="16"> Copy`;
     copy.onclick = () => {
       navigator.clipboard.writeText(item.text).then(() => {
-        copy.textContent = "Copiado";
-        setTimeout(() => (copy.textContent = "Copiar"), 900);
+        copy.textContent = "Copied";
+        setTimeout(() => (copy.textContent = "Copy"), 900);
       });
     };
 
     const use = document.createElement("button");
-    use.textContent = "Usar";
+    use.innerHTML = `<img src="icons/use.png" alt="Use" width="16" height="16"> Use`;
     use.onclick = () => {
       inputText.value = item.prompt;
-      outputEl.innerHTML = markdownToHTML(item.text);
+      outputEl.textContent = item.text;
       outputEl.classList.remove("hidden");
     };
 
@@ -105,7 +109,8 @@ async function renderHistory() {
   });
 }
 
-// --- Eventos UI ---
+// --- UI Event Listeners ---
+
 clearHistoryBtn.addEventListener("click", async () => {
   await chrome.storage.local.set({ [HISTORY_KEY]: [] });
   renderHistory();
@@ -115,8 +120,8 @@ copyBtn.addEventListener("click", async () => {
   const txt = outputEl.textContent || "";
   if (!txt) return;
   await navigator.clipboard.writeText(txt);
-  copyBtn.textContent = "Copiado";
-  setTimeout(() => (copyBtn.textContent = "Copiar"), 900);
+  copyBtn.textContent = "Copied";
+  setTimeout(() => (copyBtn.textContent = "Copy"), 900);
 });
 
 clearOutputBtn.addEventListener("click", () => {
@@ -126,7 +131,7 @@ clearOutputBtn.addEventListener("click", () => {
 generateBtn.addEventListener("click", async () => {
   const prompt = inputText.value.trim();
   if (!prompt) {
-    outputEl.textContent = "✏️ Escribe algo primero.";
+    outputEl.textContent = "✏️ Please write something first.";
     return;
   }
 
@@ -136,89 +141,72 @@ generateBtn.addEventListener("click", async () => {
   chrome.runtime.sendMessage({ action: "generate_text", prompt, tone }, async (resp) => {
     showLoading(false);
     if (!resp) {
-      outputEl.textContent = "No hubo respuesta del fondo.";
+      outputEl.textContent = "No response from background.";
       return;
     }
 
     if (resp.success) {
-      const html = markdownToHTML(resp.text);
-      outputEl.innerHTML = html;
+      outputEl.textContent = resp.text;
       await saveToHistory({ prompt, text: resp.text, t: Date.now() });
     } else {
-      outputEl.textContent = "⚠️ Error: " + (resp.error || "desconocido");
+      outputEl.textContent = "⚠️ Error: " + (resp.error || "unknown");
     }
   });
 });
 
-// --- Inicializar ---
+// Initialize history on load
 document.addEventListener("DOMContentLoaded", renderHistory);
 
-// --- Reconocimiento de voz (versión pro) ---
+// --- Voice recognition ---
 if ("webkitSpeechRecognition" in window) {
   const recognition = new webkitSpeechRecognition();
-  recognition.lang = "es-CO";
+  recognition.lang = "en-US";
   recognition.interimResults = false;
   recognition.maxAlternatives = 1;
 
   micBtn.addEventListener("click", () => {
     try {
       recognition.start();
-      micBtn.textContent = "🎙️ Escuchando...";
-      outputEl.textContent = "🎧 Esperando tu voz...";
+      micBtn.textContent = "🎙️ Listening...";
+      outputEl.textContent = "🎧 Waiting for your voice...";
     } catch {
-      outputEl.textContent = "⚠️ No se pudo iniciar el micrófono. Verifica los permisos.";
+      outputEl.textContent = "⚠️ Cannot start microphone. Check permissions.";
     }
   });
 
   recognition.onresult = (event) => {
     const transcript = event.results[0][0].transcript;
-    inputText.value = inputText.value
-      ? inputText.value + " " + transcript
-      : transcript;
-    outputEl.textContent = "✅ Texto detectado: “" + transcript + "”.";
+    inputText.value = inputText.value ? inputText.value + " " + transcript : transcript;
+    outputEl.textContent = "✅ Detected: “" + transcript + "”.";
     micBtn.textContent = "🎤";
   };
 
   recognition.onerror = (event) => {
     const err = event.error;
-    let mensaje = "";
-
+    let message = "";
     switch (err) {
-      case "not-allowed":
-        mensaje = "🚫 El micrófono está bloqueado. Actívalo en los permisos del navegador.";
-        break;
-      case "no-speech":
-        mensaje = "🎙️ No se detectó voz. Intenta hablar más cerca o con menos ruido.";
-        break;
-      case "aborted":
-        mensaje = "⚠️ Grabación cancelada.";
-        break;
-      case "network":
-        mensaje = "🌐 Problema de conexión al procesar la voz.";
-        break;
-      default:
-        mensaje = "❌ Error en el reconocimiento de voz. Intenta de nuevo.";
+      case "not-allowed": message = "🚫 Microphone blocked."; break;
+      case "no-speech": message = "🎙️ No speech detected."; break;
+      case "aborted": message = "⚠️ Recording cancelled."; break;
+      case "network": message = "🌐 Network problem during voice recognition."; break;
+      default: message = "❌ Recognition error. Try again."; 
     }
-
-    outputEl.textContent = mensaje;
+    outputEl.textContent = message;
     micBtn.textContent = "🎤";
   };
 
-  recognition.onend = () => {
-    micBtn.textContent = "🎤";
-  };
+  recognition.onend = () => { micBtn.textContent = "🎤"; };
 } else {
   micBtn.style.display = "none";
-  outputEl.textContent = "❌ Tu navegador no soporta reconocimiento de voz.";
+  outputEl.textContent = "❌ Your browser does not support voice recognition.";
 }
 
-
-// --- Pegar automáticamente en Gmail ---
+// --- Paste generated text into Gmail ---
 async function pasteToGmail(text) {
   try {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     if (!tab || !tab.url.includes("mail.google.com")) {
-      alert("⚠️ Abre Gmail para pegar la respuesta automáticamente.");
+      alert("⚠️ Open Gmail to paste the response.");
       return;
     }
 
@@ -230,38 +218,41 @@ async function pasteToGmail(text) {
           if (active.isContentEditable) active.innerHTML = text;
           else active.value = text;
         } else {
-          const compose =
-            document.querySelector('[aria-label="Cuerpo del mensaje"]') ||
-            document.querySelector('div[contenteditable="true"][role="textbox"]');
+          const compose = document.querySelector('[aria-label="Message Body"]') || document.querySelector('div[contenteditable="true"][role="textbox"]');
           if (compose) compose.innerHTML = text;
-          else alert("⚠️ No se encontró el área de redacción en Gmail.");
+          else alert("⚠️ No editable area found in Gmail.");
         }
       },
       args: [text],
     });
   } catch (err) {
-    console.error("Error al pegar en Gmail:", err);
+    console.error("Error pasting to Gmail:", err);
   }
 }
+
+resetMemoryBtn.addEventListener("click", async () => {
+  const confirmReset = confirm("⚠️ This will clear your learned style samples. Are you sure?");
+  if (!confirmReset) return;
+
+  try {
+    // Clear user style samples
+    await chrome.storage.local.set({ userSamples: [] });
+
+    // Optional: clear history as well
+    // await chrome.storage.local.set({ userSamples: [], [HISTORY_KEY]: [] });
+
+    alert("✅ Memory cleared. AI will now respond based only on the new prompt.");
+    
+    // Refresh history display if you cleared history too
+    renderHistory();
+  } catch (e) {
+    console.error("Error clearing memory:", e);
+    alert("❌ Failed to clear memory.");
+  }
+});
 
 useBtn.addEventListener("click", async () => {
   const txt = outputEl.textContent || "";
   if (!txt) return;
   await pasteToGmail(txt);
 });
-
-// --- Conversor de Markdown a HTML bonito ---
-function markdownToHTML(md) {
-  if (!md) return "";
-  return md
-    .replace(/^### (.*$)/gim, "<h3>$1</h3>")
-    .replace(/^## (.*$)/gim, "<h2>$1</h2>")
-    .replace(/^# (.*$)/gim, "<h1>$1</h1>")
-    .replace(/\*\*(.*?)\*\*/gim, "<strong>$1</strong>")
-    .replace(/\*(.*?)\*/gim, "<em>$1</em>")
-    .replace(/^- (.*$)/gim, "<li>$1</li>")
-    .replace(/\n---\n/gim, "<hr>")
-    .replace(/\n$/gim, "<br>")
-    .replace(/\n/g, "<br>")
-    .replace(/(<li>.*<\/li>)/gim, "<ul>$1</ul>");
-}

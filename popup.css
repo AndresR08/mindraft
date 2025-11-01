@@ -1,98 +1,137 @@
-/* popup.css — estilo moderno, limpio y elegante */
+/* popup.css — modern minimalistic style */
 
 body {
   font-family: "Segoe UI", Roboto, Arial, sans-serif;
-  background-color: #ffffff;
-  color: #1f2937;
+  background-color: #fefefe;
+  color: #111827;
   margin: 0;
-  padding: 14px;
+  padding: 16px;
   width: 360px;
   box-sizing: border-box;
 }
 
-/* Encabezado */
-h1 {
-  font-size: 18px;
-  text-align: center;
-  margin-bottom: 12px;
+h1, h2, h3 {
+  margin: 0;
+  font-weight: 500;
   color: #111827;
-  font-weight: 600;
 }
 
-/* Campos de entrada */
+/* Header with logo */
+header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+header .logo {
+  width: 120px;
+  height: 120px;
+  display: block;
+  margin: 0 auto 12px auto;
+  object-fit: cover;   
+  border-radius: 100%;  
+}
+
+#resetMemoryBtn {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+
+/* Header title */
+header h2 {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+/* Input textarea */
 textarea {
   width: 100%;
   height: 80px;
-  padding: 8px;
-  resize: vertical;
-  font-family: inherit;
-  font-size: 14px;
+  padding: 10px;
   border-radius: 8px;
   border: 1px solid #d1d5db;
-  outline: none;
-  transition: border-color 0.2s ease;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 textarea:focus {
   border-color: #2563eb;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.25);
 }
 
-/* Select de tono */
+/* Tone select */
 select {
   width: 100%;
-  margin-top: 8px;
-  margin-bottom: 10px;
-  padding: 6px 8px;
+  padding: 8px;
   border-radius: 6px;
   border: 1px solid #d1d5db;
   background-color: #f9fafb;
-  font-size: 13px;
+  font-size: 14px;
+  margin: 8px 0 12px 0;
 }
 
-/* Botones */
+/* Buttons general */
 button {
-  background-color: #2563eb;
-  color: white;
   border: none;
   border-radius: 8px;
   padding: 8px 12px;
   font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
 }
 
 button:hover {
-  background-color: #1e40af;
+  opacity: 0.9;
+  transform: scale(1.05);
 }
 
 button:active {
-  transform: scale(0.97);
+  transform: scale(0.95);
 }
 
-/* Botones secundarios */
-#copyBtn,
-#useBtn,
-#clearOutputBtn,
-#clearHistoryBtn {
-  background-color: #f3f4f6;
-  color: #1f2937;
-  border: 1px solid #e5e7eb;
+.primary {
+  background-color: #2563eb;
+  color: #fff;
 }
 
-#copyBtn:hover,
-#useBtn:hover,
-#clearOutputBtn:hover,
-#clearHistoryBtn:hover {
+.secondary {
   background-color: #e5e7eb;
+  color: #111827;
 }
 
-/* Micrófono */
+/* Microphone button - only icon */
 #micBtn {
-  background-color: #10b981;
+  background-color: #10b9811c;
+  padding: 6px;
+  margin-bottom: auto;
 }
 
 #micBtn:hover {
-  background-color: #059669;
+  background-color: #1bb8869d;
+}
+
+.icon-only {
+  width: 24px;
+  height: 24px;
+  display: block;
+  margin: 0 auto;
+}
+
+button .btn-icon {
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  margin-right: 6px;
+  pointer-events: none;
 }
 
 /* Loader */
@@ -102,58 +141,30 @@ button:active {
   color: #6b7280;
 }
 
-/* Salida generada */
+/* Output area - visible text */
 #output {
-  background-color: #f9fafb;
-  border: 1px solid #e5e7eb;
+  background-color: #f3f4f6; /* soft contrast */
+  color: #111827; /* dark text */
+  border: 1px solid #d1d5db;
   border-radius: 10px;
-  padding: 10px;
+  padding: 12px;
   font-size: 14px;
-  line-height: 1.5;
-  max-height: 200px;
+  line-height: 1.6;
+  max-height: 180px;
   overflow-y: auto;
-  margin-top: 10px;
-  white-space: normal;
+  margin-top: 12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  opacity: 1;
+  transform: translateY(0);
 }
 
-/* Markdown render */
-#output h1,
-#output h2,
-#output h3 {
-  color: #111827;
-  margin-top: 8px;
-  margin-bottom: 6px;
-}
-
-#output strong {
-  font-weight: 600;
-  color: #111827;
-}
-
-#output em {
-  font-style: italic;
-  color: #374151;
-}
-
-#output ul {
-  list-style: disc;
-  margin-left: 18px;
-  padding-left: 6px;
-}
-
-#output hr {
-  border: none;
-  border-top: 1px solid #e5e7eb;
-  margin: 10px 0;
-}
-
-/* Historial */
+/* History */
 #historyList {
   margin-top: 12px;
   list-style: none;
   padding: 0;
-  border-top: 1px solid #e5e7eb;
-  max-height: 160px;
+  max-height: 150px;
   overflow-y: auto;
 }
 
@@ -161,13 +172,13 @@ button:active {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  border-bottom: 1px solid #f3f4f6;
   padding: 6px 0;
+  border-bottom: 1px solid #f3f4f6;
   transition: background-color 0.15s ease;
 }
 
 .history-item:hover {
-  background-color: #f9fafb;
+  background-color: #f3f4f6;
 }
 
 .meta {
@@ -181,41 +192,64 @@ button:active {
 }
 
 .actions button {
-  font-size: 12px;
+  background-color: #e5e7eb;
+  color: #111827;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
   padding: 4px 6px;
+  font-size: 12px;
 }
 
-/* Scroll suave */
+.actions button:hover {
+  background-color: #d1d5db;
+  transform: scale(1.05);
+}
+
+/* Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
   background-color: #cbd5e1;
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: #94a3b8;
 }
 
-/* Estados ocultos */
+/* Footer */
+footer {
+  font-size: 11px;
+  color: #6b7280;
+  text-align: center;
+  margin-top: 12px;
+}
+
+/* Hide elements */
 .hidden {
   display: none;
 }
 
-/* Animación de entrada */
-#output {
-  animation: fadeIn 0.25s ease-in;
+/* Tooltips */
+button[data-tooltip] {
+  position: relative;
+  cursor: pointer;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(3px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+button[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111827;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  white-space: nowrap;
+  z-index: 10;
+  opacity: 0.9;
 }

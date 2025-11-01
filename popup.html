@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -8,46 +8,67 @@
 </head>
 <body>
   <div class="container">
+    <!-- Header -->
     <header>
-      <h2>MinDraft ✍️</h2>
+      <img src="icons/logo.png" alt="MinDraft Logo" class="logo">
+      <h2>MinDraft</h2>
     </header>
 
+    <!-- Input section -->
     <section class="input-section">
-      <textarea id="inputText" placeholder="Escribe o dicta tu idea..."></textarea>
-
+      <textarea id="inputText" placeholder="Type or dictate your idea..."></textarea>
+      
       <div class="controls">
-        <button id="micBtn" title="Dictar por voz">🎤</button>
-        <select id="toneSelect" title="Selecciona tono">
+        <button id="micBtn" title="Voice Dictation">
+          <img src="icons/mic.png" alt="Mic" class="icon-only">
+        </button>
+        <select id="toneSelect" title="Select Tone">
           <option value="formal">Formal</option>
           <option value="casual">Casual</option>
-          <option value="brief">Breve</option>
+          <option value="brief">Brief</option>
         </select>
-        <button id="generateBtn" class="primary">Redactar con IA</button>
+        <button id="generateBtn" class="primary">Generate AI</button>
       </div>
     </section>
 
+    <!-- Output section -->
     <section class="output-section">
-      <div id="loader" class="hidden">Pensando… ⏳</div>
+      <div id="loader" class="hidden">Thinking… ⏳</div>
       <pre id="output" class="output-area" aria-live="polite"></pre>
       <div class="output-actions">
-        <button id="copyBtn">Copiar</button>
-        <button id="useBtn">Usar en textarea</button>
-        <button id="clearOutputBtn">Borrar</button>
+        <button id="copyBtn" class="secondary">
+          <img src="icons/copy.png" alt="Copy" class="btn-icon"> Copy
+        </button>
+        <button id="useBtn" class="secondary">
+          <img src="icons/use.png" alt="Use" class="btn-icon"> Use in Gmail
+        </button>
+        <button id="clearOutputBtn" class="secondary">
+          <img src="icons/clear.png" alt="Clear" class="btn-icon"> Clear
+        </button>
       </div>
     </section>
 
+    <!-- History section -->
     <section class="history-section">
       <div class="history-header">
-        <h3>Historial</h3>
-        <button id="clearHistoryBtn" class="small">Borrar historial</button>
+        <h3>History</h3>
+        <button id="clearHistoryBtn" class="secondary">
+          <img src="icons/clear.png" alt="Clear" class="btn-icon"> Clear History
+        </button>
       </div>
       <ul id="historyList" class="history-list"></ul>
     </section>
 
+    <!-- Footer -->
     <footer>
-      <small>MinDraft — Usa Gemini. Recuerda no subir tu API key.</small>
+      <small>MinDraft — Powered by Gemini.</small>
     </footer>
   </div>
+  
+  <!-- Reset Style / Memory Button -->
+<button id="resetMemoryBtn" class="secondary">
+  <img src="icons/reset.png" alt="Reset" class="btn-icon"> Reset Memory
+</button>
 
   <script src="popup.js"></script>
 </body>

@@ -1,14 +1,15 @@
 {
   "manifest_version": 3,
   "name": "MinDraft",
-  "version": "1.1",
-  "description": "Redacta correos y mensajes con IA. Copia y historial incluidos.",
+  "version": "1.2.0",
+  "description": "Redacta correos con Gemini AI directamente en Gmail",
   "permissions": [
     "storage",
     "activeTab",
     "scripting"
   ],
   "host_permissions": [
+    "https://mail.google.com/*",
     "https://generativelanguage.googleapis.com/*"
   ],
   "background": {
@@ -17,14 +18,16 @@
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "16": "icon.png",
-      "48": "icon.png",
-      "128": "icon.png"
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
     }
   },
   "icons": {
-    "16": "icon.png",
-    "48": "icon.png",
-    "128": "icon.png"
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
   }
 }
