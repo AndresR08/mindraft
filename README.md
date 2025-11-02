@@ -2,7 +2,9 @@
 
 MinDraft is a Chrome Extension that helps you generate, proofread, and polish emails directly in your browser. It uses the Gemini API to produce personalized responses and learns your writing style over time.
 
-**Note:** The Gemini API key is preconfigured in `background.js` for this hackathon project.
+**Note:** This extension is focused on email composition, particularly in Gmail. It is a hackathon project.
+
+---
 
 ## Features
 
@@ -20,7 +22,7 @@ MinDraft is a Chrome Extension that helps you generate, proofread, and polish em
 
 ### Gmail Integration
 - Paste AI-generated responses directly into Gmail compose windows.
-- Minimal setup required: just click **Use in Gmail**.
+- Minimal setup required: just click "Use in Gmail".
 
 ### History & Style Memory
 - Stores your last 10 prompts and responses.
@@ -30,17 +32,21 @@ MinDraft is a Chrome Extension that helps you generate, proofread, and polish em
 ### Minimalist UI
 - Modern design with rounded elements, clear icons, and responsive layout.
 
+---
+
 ## Installation Guide
+
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/AndresR08/mindraft.git
+
+```bash
+git clone https://github.com/AndresR08/mindraft.git
 Load as an unpacked extension in Chrome:
 
 Open chrome://extensions/
 
 Enable Developer Mode
 
-Click Load unpacked and select the mindraft folder
+Click "Load unpacked" and select the mindraft folder
 
 Usage
 Open the MinDraft popup in Chrome.
@@ -81,7 +87,7 @@ Focused exclusively on emails, particularly Gmail.
 
 Voice recognition works best in English (browser support may vary).
 
-API key is hardcoded for hackathon purposes; not intended for public deployment.
+API key is configured in background.js for hackathon purposes.
 
 License
 This project is open source under the MIT License. See the LICENSE file for details.
