@@ -1,45 +1,111 @@
-# MinDraft — AI Writing Assistant / Asistente de Escritura IA
+MinDraft — AI Email Assistant
 
-MinDraft is a Chrome extension that helps you generate, proofread, and polish emails or other text content directly in your browser. It uses the Gemini API and learns your writing style over time to produce personalized outputs.
+MinDraft is a Chrome Extension that helps you generate, proofread, and polish emails directly in your browser. It uses the Gemini API to produce personalized responses and learns your writing style over time.
 
-MinDraft es una extensión de Chrome que te ayuda a generar, corregir y pulir correos o cualquier texto directamente en tu navegador. Usa la API Gemini y aprende tu estilo de escritura con el tiempo para producir respuestas personalizadas.
+Note: This extension is focused on email composition, particularly in Gmail. It is a hackathon project, and the API key is configured in background.js.
 
----
+Features
+AI Text Generation
 
-## 🔧 Features / Funcionalidades
+Generate text based on your input and selected tone:
 
-- **AI Text Generation / Generación de Texto IA**  
-  - Generate text based on your input and selected tone (Formal, Casual, Brief).  
-    Genera texto basado en tu entrada y el tono seleccionado (Formal, Casual, Breve).  
-  - Automatic language detection: responds in English if prompt is in English, in Spanish if prompt is in Spanish.  
-    Detección automática de idioma: responde en inglés si el prompt está en inglés, en español si está en español.
+Formal — professional responses
 
-- **Voice Input / Entrada por Voz**  
-  - Dictate your prompt via microphone.  
-    Dicta tu prompt usando el micrófono.  
-  - One-click microphone button with live status.  
-    Botón de micrófono con un clic y estado en vivo.
+Casual — friendly and approachable
 
-- **History & Style Memory / Historial y Memoria de Estilo**  
-  - Stores your last 10 prompts and responses.  
-    Guarda tus últimos 10 prompts y respuestas.  
-  - Learns your style from previous entries to improve AI suggestions.  
-    Aprende tu estilo de entradas anteriores para mejorar las sugerencias de la IA.  
-  - Reset button to clear memory anytime.  
-    Botón de reinicio para borrar la memoria en cualquier momento.
+Brief — concise and direct
 
-- **Gmail Integration / Integración con Gmail**  
-  - Paste generated text directly into Gmail compose windows.  
-    Pega el texto generado directamente en la ventana de redacción de Gmail.
+Automatic language detection: responds in English if the input is in English, Spanish if the input is in Spanish.
 
-- **Minimalist UI / Interfaz Minimalista**  
-  - Modern design with rounded elements, clear icons, and responsive layout.  
-    Diseño moderno con elementos redondeados, iconos claros y diseño adaptable.
+Voice Input
 
----
+Dictate your prompt using your microphone.
 
-## 🛠 Installation Guide / Guía de Instalación
+One-click microphone button with live status.
 
-1. **Download or clone this repository / Descarga o clona este repositorio**:  
-   ```bash
-   git clone https://github.com/AndresR08/mindraft.git
+Transcribes your speech and inserts it into the input box.
+
+Gmail Integration
+
+Paste AI-generated responses directly into Gmail compose windows.
+
+Minimal setup required: just click Use in Gmail.
+
+History & Style Memory
+
+Stores your last 10 prompts and responses.
+
+Learns your writing style to improve AI suggestions.
+
+Reset button to clear memory anytime.
+
+Minimalist UI
+
+Modern design with rounded elements, clear icons, and responsive layout.
+
+Installation Guide
+
+Clone the repository:
+
+git clone https://github.com/AndresR08/mindraft.git
+
+
+Load as an unpacked extension in Chrome:
+
+Open chrome://extensions/
+
+Enable Developer Mode
+
+Click Load unpacked and select the mindraft folder
+
+Configure the Gemini API key:
+
+Open background.js
+
+Replace GEMINI_API_KEY with your personal API key from Google Gemini API
+
+Usage
+
+Open the MinDraft popup in Chrome.
+
+Type or dictate your email text in the input box.
+
+Select a tone (Formal, Casual, Brief).
+
+Click Generate AI.
+
+Copy the output or paste it directly into Gmail using Use in Gmail.
+
+Check your history or reset your style memory at any time.
+
+File Structure
+mindraft/
+├─ background.js      # Handles AI calls and tone/style logic
+├─ content.js         # Inserts generated text into Gmail
+├─ popup.html         # Extension popup UI
+├─ popup.css          # Styling
+├─ popup.js           # UI interactions, voice recognition, and history
+├─ icon.png
+└─ icons/
+   ├─ clear.png
+   ├─ copy.png
+   ├─ icon128.png
+   ├─ icon16.png
+   ├─ icon32.png
+   ├─ icon48.png
+   ├─ logo.png
+   ├─ mic.png
+   ├─ reset.png
+   └─ use.png
+
+Limitations
+
+Focused exclusively on emails, particularly Gmail.
+
+Voice recognition works best in English (browser support may vary).
+
+API key must be manually configured in background.js for security reasons.
+
+License
+
+This project is open source under the MIT License. See the LICENSE file for details.

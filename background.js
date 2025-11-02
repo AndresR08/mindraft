@@ -1,14 +1,17 @@
 // background.js - Service Worker for MinDraft with Gemini API
 // Handles AI text generation based on user tone and style
 
+//aqui
+
 const GEMINI_API_KEY = "AIzaSyBUWkzsKJR-UBinxgTm4WcCWn5Kp2uPzzY";
 
 // Map of available tones
 const toneMap = {
-  formal: "Write a formal and professional response. in english or spanish",
-  casual: "Write a casual, friendly, and approachable response. in english or spanish",
-  brief: "Write a brief and direct response. in english or spanish",
+  formal: "If the user is writing or replying to an email, write a formal and professional response. If it's a general question or request, respond helpfully and clearly in the same tone. Respond only in the language used by the user.",
+  casual: "If the user is writing or replying to an email, write a casual and friendly response. If it's a general question or request, reply naturally and conversationally. Respond only in the language used by the user.",
+  brief: "If the user is writing or replying to an email, write a short and polite response. If it's a general question or request, reply concisely and directly. Respond only in the language used by the user."
 };
+
 
 // --- Call Gemini API ---
 async function callGemini(prompt, tone) {
